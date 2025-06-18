@@ -44,36 +44,64 @@ import img1 from '@/public/img1.jpg'
 
 
 // components/RoommateCard.jsx
-import Image from 'next/image';
+// import Image from 'next/image';
 
-const RoommateCard = ({ roommates }) => {
+// const RoommateCard = ({ roommates }) => {
+//   return (
+//     <div className="px-4 py-6">
+//       <h2 className="text-xl font-semibold mb-4">Recommended Roommates</h2>
+
+//       <div className="flex overflow-x-auto space-x-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+//         {roommates.map((roommate, index) => (
+//           <div
+//             key={index}
+//             className="min-w-[250px] bg-white shadow-md rounded-lg overflow-hidden flex-shrink-0"
+//           >
+//             <Image
+//               // src={roommate.imageUrl}
+//               src={img1}
+
+//               alt={roommate.name}
+//               width={300}
+//               height={200}
+//               className="object-cover w-full h-40"
+//             />
+//             <div className="p-3">
+//               <h3 className="text-md font-bold text-gray-800">{roommate.name}</h3>
+//               <p className="text-sm text-gray-600">{roommate.location}</p>
+//               <p className="text-xs text-gray-500">Age: {roommate.age}</p>
+//               <p className="text-xs text-gray-500">Budget: ${roommate.budget}</p>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default RoommateCard;
+
+
+
+
+
+import Image from "next/image";
+
+const RoommateCard = ({ roommate }) => {
   return (
-    <div className="px-4 py-6">
-      <h2 className="text-xl font-semibold mb-4">Recommended Roommates</h2>
-
-      <div className="flex overflow-x-auto space-x-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
-        {roommates.map((roommate, index) => (
-          <div
-            key={index}
-            className="min-w-[250px] bg-white shadow-md rounded-lg overflow-hidden flex-shrink-0"
-          >
-            <Image
-              // src={roommate.imageUrl}
-              src={img1}
-
-              alt={roommate.name}
-              width={300}
-              height={200}
-              className="object-cover w-full h-40"
-            />
-            <div className="p-3">
-              <h3 className="text-md font-bold text-gray-800">{roommate.name}</h3>
-              <p className="text-sm text-gray-600">{roommate.location}</p>
-              <p className="text-xs text-gray-500">Age: {roommate.age}</p>
-              <p className="text-xs text-gray-500">Budget: ${roommate.budget}</p>
-            </div>
-          </div>
-        ))}
+    <div className="min-w-[250px] bg-white shadow-md rounded-lg overflow-hidden flex-shrink-0">
+      <Image
+        src={roommate.imageUrl}
+        alt={roommate.name}
+        width={300}
+        height={200}
+        className="object-cover w-full h-40"
+      />
+      <div className="p-3">
+        <h3 className="text-md font-bold text-gray-800">{roommate.name}</h3>
+        <p className="text-sm text-gray-600">{roommate.location}</p>
+        <p className="text-xs text-gray-500">Age: {roommate.age}</p>
+        <p className="text-xs text-gray-500">Budget: {roommate.budget} ETB</p>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 import room1 from '@/public/room1.jpg'
 import room2 from '@/public/room2.jpg'
 import room3 from '@/public/room3.jpg'
-import room4 from '@/public/room4.jpg'
+import room5 from '@/public/room5.jpg'
 
 
 
@@ -33,6 +33,15 @@ const dummyRooms = [
       bedrooms: 1,
       description: "Shared room in a friendly environment. Females only.",
       imageUrl: room3
+    },
+    {
+      id: "r4",
+      title: "Cozy Shared Room in Lideta",
+      location: "Mexico",
+      price: 2500,
+      bedrooms: 1,
+      description: "Shared room in a friendly environment. Females only.",
+      imageUrl: room5
     },
   ];
   

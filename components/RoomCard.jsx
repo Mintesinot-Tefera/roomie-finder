@@ -1,9 +1,20 @@
 // components/RoomCard.jsx
+"use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const RoomCard = ({ room }) => {
+  const router = useRouter();
+
+   const handleClick = () => {
+    router.push(`/room/${room.id}`);
+  };
+
   return (
-    <div className="flex flex-col sm:flex-row bg-white rounded-2xl shadow-lg overflow-hidden w-full max-w-4xl">
+    <div 
+    onClick={handleClick}
+    className="cursor-pointer hover:shadow-lg transition flex flex-col sm:flex-row bg-white rounded-2xl shadow-lg overflow-hidden w-full max-w-4xl"
+    >
       <div className="relative h-60 sm:h-auto sm:w-1/3">
         <Image
           src={room.imageUrl}
@@ -12,6 +23,13 @@ const RoomCard = ({ room }) => {
           objectFit="cover"
           className="rounded-l-2xl"
         />
+        {/* <Image
+        src={room.imageUrl}
+        alt={room.title}
+        width={500}
+        height={300}
+        className="object-cover w-full h-52"
+      /> */}
       </div>
 
       <div className="flex flex-col justify-between p-5 sm:w-2/3">

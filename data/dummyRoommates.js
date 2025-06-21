@@ -16,7 +16,8 @@ const dummyRoommates = [
       age: 25,
       location: "Addis Ababa",
       budget: 4000,
-      imageUrl: rm1
+      imageUrl: rm1,
+      gender: 'Male'
     },
     {
       id: "2",
@@ -24,7 +25,9 @@ const dummyRoommates = [
       age: 27,
       location: "Bole",
       budget: 3500,
-      imageUrl: rm2
+      imageUrl: rm2,
+      gender: 'Male'
+
     },
     {
       id: "3",
@@ -32,7 +35,9 @@ const dummyRoommates = [
       age: 23,
       location: "Megenagna",
       budget: 3000,
-      imageUrl: rm3
+      imageUrl: rm3,
+      gender: 'Female'
+
     },
     {
       id: "4",
@@ -40,7 +45,9 @@ const dummyRoommates = [
       age: 29,
       location: "Piassa",
       budget: 5000,
-      imageUrl: rm4
+      imageUrl: rm4,
+      gender: 'Male'
+
     },
     {
       id: "5",
@@ -48,7 +55,9 @@ const dummyRoommates = [
       age: 26,
       location: "CMC",
       budget: 4500,
-      imageUrl: rm5
+      imageUrl: rm5,
+      gender: 'Male'
+
     },
     {
       id: "6",
@@ -56,7 +65,9 @@ const dummyRoommates = [
       age: 24,
       location: "Lideta",
       budget: 3200,
-      imageUrl: rm6
+      imageUrl: rm6,
+      gender: 'Female'
+
     },
     {
       id: "7",
@@ -64,7 +75,9 @@ const dummyRoommates = [
       age: 23,
       location: "Megenagna",
       budget: 3000,
-      imageUrl: rm7
+      imageUrl: rm7,
+      gender: 'Male'
+
     },
     {
       id: "8",
@@ -72,7 +85,9 @@ const dummyRoommates = [
       age: 23,
       location: "Megenagna",
       budget: 3000,
-      imageUrl: rm8
+      imageUrl: rm8,
+      gender: 'Male'
+
     }
   ];
   

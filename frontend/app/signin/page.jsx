@@ -80,7 +80,10 @@ const SignInPage = () => {
 
          {/* Google Sign-In Button */}
         <button
-          onClick={() => alert("Google Sign-In coming soon")} // Replace with real logic
+        // onClick={() => signIn("google")}
+          href="http://localhost:5000/api/auth/google"
+
+          // onClick={() => alert("Google Sign-In coming soon")} // Replace with real logic
           className="w-full flex items-center justify-center gap-3 text-sm font-medium border border-gray-300 rounded-md px-4 py-2 hover:bg-gray-100 mb-4"
         >
           <img

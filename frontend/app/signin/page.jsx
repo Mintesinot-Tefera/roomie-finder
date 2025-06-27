@@ -53,7 +53,8 @@
 
 
 "use client";
-import AuthForm from "@/components/AuthForm";
+// import AuthForm from "@/components/AuthForm";
+import LoginForm from "@/components/LoginForm";
 // import { signIn } from "next-auth/react";
 
 const SignInPage = () => {
@@ -94,8 +95,8 @@ const SignInPage = () => {
             />
             Continue with Google
           </button>
-
-          <AuthForm type="signin" />
+          <LoginForm />
+          {/* <AuthForm type="signin" /> */}
         </div>
       </div>
     </div>

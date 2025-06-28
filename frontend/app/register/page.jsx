@@ -18,7 +18,8 @@
 
 
 "use client";
-import AuthForm from "@/components/AuthForm";
+import RegisterForm from "@/components/RegisterForm";
+// import AuthForm from "@/components/AuthForm";
 
 const RegisterPage = () => {
   return (
@@ -42,7 +43,8 @@ const RegisterPage = () => {
           <h1 className="text-2xl font-bold mb-6 text-blue-800 text-center">
             Create your RoomieFinder Account
           </h1>
-          <AuthForm type="register" />
+          {/* <AuthForm type="register" /> */}
+          <RegisterForm />
         </div>
       </div>
     </div>

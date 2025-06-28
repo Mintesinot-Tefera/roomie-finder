@@ -24,7 +24,7 @@
 //     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
 //       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-6">
 //         <h1 className="text-2xl font-bold mb-6 text-center">Sign in to RoomieFinder</h1>
-        
+
 //         {/* Google Sign-In Button */}
 //         <button
 //           onClick={() => alert("Google Sign-In coming soon")} // Replace with real logic
@@ -53,7 +53,9 @@
 
 
 "use client";
-import AuthForm from "@/components/AuthForm";
+// import AuthForm from "@/components/AuthForm";
+import LoginForm from "@/components/LoginForm";
+// import { signIn } from "next-auth/react";
 
 const SignInPage = () => {
   return (
@@ -78,23 +80,23 @@ const SignInPage = () => {
             Sign in to your RoomieFinder Account
           </h1>
 
-         {/* Google Sign-In Button */}
-        <button
-        // onClick={() => signIn("google")}
-          href="http://localhost:5000/api/auth/google"
+          {/* Google Sign-In Button */}
+          <button
+            // onClick={() => signIn("google")}
+            // href="http://localhost:5000/api/auth/google"
 
-          // onClick={() => alert("Google Sign-In coming soon")} // Replace with real logic
-          className="w-full flex items-center justify-center gap-3 text-sm font-medium border border-gray-300 rounded-md px-4 py-2 hover:bg-gray-100 mb-4"
-        >
-          <img
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            alt="Google"
-            className="w-5 h-5"
-          />
-          Continue with Google
-        </button>
-
-          <AuthForm type="signin" />
+            // onClick={() => alert("Google Sign-In coming soon")} // Replace with real logic
+            className="w-full flex items-center justify-center gap-3 text-sm font-medium border border-gray-300 rounded-md px-4 py-2 hover:bg-gray-100 mb-4"
+          >
+            <img
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="Google"
+              className="w-5 h-5"
+            />
+            Continue with Google
+          </button>
+          <LoginForm />
+          {/* <AuthForm type="signin" /> */}
         </div>
       </div>
     </div>

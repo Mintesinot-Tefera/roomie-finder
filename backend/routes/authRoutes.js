@@ -2,10 +2,8 @@ const express = require("express");
 const { register, login } = require("../controllers/authController");
 const router = express.Router();
 const User = require("../models/User");
-const passport = require("passport");
-const jwt = require("jsonwebtoken");
-
-
+// const passport = require("passport");
+// const jwt = require("jsonwebtoken");
 
 
 
@@ -55,21 +53,21 @@ router.get("/verify-email", async (req, res) => {
 
 
 
-// Start Google Login
-router.get("/google", passport.authenticate("google", {
-    scope: ["profile", "email"]
-}));
+// // Start Google Login
+// router.get("/google", passport.authenticate("google", {
+//     scope: ["profile", "email"]
+// }));
 
-// Google Callback
-router.get("/google/callback", passport.authenticate("google", {
-    failureRedirect: "http://localhost:3000/signin"
-}), (req, res) => {
-    // Generate token
-    const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+// // Google Callback
+// router.get("/google/callback", passport.authenticate("google", {
+//     failureRedirect: "http://localhost:3000/signin"
+// }), (req, res) => {
+//     // Generate token
+//     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-    // Redirect to frontend with token
-    res.redirect(`http://localhost:3000?token=${token}`);
-});
+//     // Redirect to frontend with token
+//     res.redirect(`http://localhost:3000?token=${token}`);
+// });
 
 module.exports = router;
 

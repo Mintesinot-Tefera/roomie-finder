@@ -1,35 +1,70 @@
-const User = require("../models/User");
-const bcrypt = require("bcryptjs");
+// // middleware/authMiddleware.js
+// const jwt = require("jsonwebtoken");
+
+// const authMiddleware = (req, res, next) => {
+//   // Get token from "Authorization: Bearer <token>"
+//   const authHeader = req.headers.authorization;
+//   const token = authHeader?.split(" ")[1];
+
+//   if (!token) {
+//     return res.status(401).json({ message: "Access denied. No token provided." });
+//   }
+
+//   try {
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//     req.user = decoded; // Add user payload to req object
+//     next(); // Go to the next middleware/controller
+//   } catch (err) {
+//     return res.status(401).json({ message: "Invalid or expired token." });
+//   }
+// };
+
+// module.exports = authMiddleware;
+
+
+
+
+// const jwt = require("jsonwebtoken");
+
+// const protect = (req, res, next) => {
+//   const authHeader = req.headers.authorization;
+
+//   if (!authHeader || !authHeader.startsWith("Bearer ")) {
+//     return res.status(401).json({ message: "Unauthorized. No token provided." });
+//   }
+
+//   const token = authHeader.split(" ")[1];
+
+//   try {
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//     req.user = decoded; // Attach user data to request
+//     next(); // Continue to the next middleware/route
+//   } catch (err) {
+//     res.status(401).json({ message: "Unauthorized. Invalid or expired token." });
+//   }
+// };
+
+// module.exports = protect;
+
+
+
+
 const jwt = require("jsonwebtoken");
 
-exports.register = async (req, res) => {
-  const { fullname, email, password } = req.body;
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "No token provided" });
+  }
 
+  const token = authHeader.split(" ")[1];
   try {
-    const exists = await User.findOne({ email });
-    if (exists) return res.status(400).json({ message: "User already exists" });
-
-    const hashed = await bcrypt.hash(password, 10);
-    const newUser = await User.create({ fullname, email, password: hashed });
-    res.status(201).json({ message: "Registered", user: newUser });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = { id: decoded.id };
+    next();
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(401).json({ message: "Invalid token" });
   }
 };
 
-exports.login = async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
-
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-    res.json({ token, user: { id: user._id, fullname: user.fullname, email: user.email } });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+module.exports = authMiddleware;

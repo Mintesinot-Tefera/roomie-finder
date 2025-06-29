@@ -46,6 +46,8 @@ const LoginForm = () => {
       if (!res.ok) return setErrors(data.message || "Login failed");
 
       localStorage.setItem("token", data.token);
+      localStorage.setItem("role", user.role);
+
       router.push("/");
     } catch {
       setErrors("Network error");

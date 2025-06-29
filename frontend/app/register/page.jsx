@@ -21,6 +21,7 @@
 import RegisterForm from "@/components/RegisterForm";
 // import AuthForm from "@/components/AuthForm";
 
+
 const RegisterPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center px-4">

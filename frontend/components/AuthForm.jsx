@@ -83,10 +83,7 @@ const AuthForm = ({ type }) => {
         } catch (err) {
             setGeneralError("Network error. Please try again.");
         }
-
-
     }
-
         return (
             <form onSubmit={handleSubmit} className="space-y-4">
                 {type === "register" && (

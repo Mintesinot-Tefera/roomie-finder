@@ -5,5 +5,8 @@
   },
   "devDependencies": {
     "concurrently": "^8.0.0"
+  },
+  "dependencies": {
+    "classnames": "^2.5.1"
   }
 }

@@ -142,6 +142,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/app/admin/components/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import  AnalyticsOverview from "@/app/admin/components/AnalyticsOverview";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -154,13 +155,18 @@ const AdminDashboard = () => {
       seeker: 70,
     },
     recentUsers: [
-      { id: 1, name: "Sara K.", role: "seeker", joined: "2024-06-01" },
-      { id: 2, name: "Ali N.", role: "landlord", joined: "2024-06-02" },
+      { id: 1, name: "Ross G.", role: "seeker", joined: "2024-06-01" },
+      { id: 2, name: "Joey T.", role: "landlord", joined: "2024-06-02" },
+      { id: 3, name: "Chandler B.", role: "landlord", joined: "2024-06-02" },
+      { id: 4, name: "Rachel N.", role: "landlord", joined: "2024-06-02" },
+      { id: 5, name: "Phebie B.", role: "landlord", joined: "2024-06-02" },
+      { id: 6, name: "Monica G.", role: "landlord", joined: "2024-06-02" },
+
       // ... more
     ],
     recentListings: [
       { id: 1, title: "Modern Flat in Bole", type: "room", posted: "2024-06-03" },
-      { id: 2, name: "Kalkidan", type: "roommate", posted: "2024-06-04" },
+      { id: 2, name: "Kalemwork", type: "roommate", posted: "2024-06-04" },
       // ... more
     ],
   });
@@ -170,6 +176,51 @@ const AdminDashboard = () => {
     { name: "Landlords", value: stats.userRoles.landlord },
     { name: "Seekers", value: stats.userRoles.seeker },
   ];
+  const [analytics, setAnalytics] = useState(null);
+
+  // useEffect(() => {
+  //   const fetchAnalytics = async () => {
+  //     const res = await fetch("http://localhost:5000/api/admin/analytics", {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+  //     const data = await res.json();
+  //     setAnalytics(data);
+  //   };
+
+  //   fetchAnalytics();
+  // }, []);
+
+
+   useEffect(() => {
+    // Dummy mock data instead of fetching
+    const dummyData = {
+      signupData: [
+        { _id: "2024-01", count: 10 },
+        { _id: "2024-02", count: 18 },
+        { _id: "2024-03", count: 25 },
+        { _id: "2024-04", count: 20 },
+        { _id: "2024-05", count: 32 },
+        { _id: "2024-06", count: 28 },
+        { _id: "2024-07", count: 40 },
+      ],
+      roomByRegion: [
+        { _id: "Addis Ababa", count: 12 },
+        { _id: "Adama", count: 7 },
+        { _id: "Bahir Dar", count: 10 },
+        { _id: "Hawassa", count: 5 },
+      ],
+      genderDist: [
+        { _id: "Male", count: 30 },
+        { _id: "Female", count: 45 },
+      ],
+    };
+
+    setTimeout(() => {
+      setAnalytics(dummyData);
+    }, 800); // simulate loading
+  }, []);
 
   return (
     <div className="p-6 space-y-6">
@@ -189,6 +240,19 @@ const AdminDashboard = () => {
           <BarChart data={chartData}><XAxis dataKey="name" /><YAxis /><Tooltip /><Bar dataKey="value" fill="#2563eb" /></BarChart>
         </ResponsiveContainer>
       </div>
+
+      {/* AnalyticsOverview */}
+      <div className="bg-white rounded-xl shadow p-4">
+        <h2 className="text-lg font-semibold mb-4">Analytics Overview</h2>
+        <div className="p-6 space-y-6">
+          {analytics ? (
+            <AnalyticsOverview data={analytics} />
+          ) : (
+            <p className="text-gray-500">Loading analytics...</p>
+          )}
+        </div>
+      </div>
+
 
       {/* Recent Signups / Listings */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

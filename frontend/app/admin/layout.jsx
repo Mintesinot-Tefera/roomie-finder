@@ -10,6 +10,8 @@ export default function AdminLayout({ children }) {
             <a href="/admin/users" className="block hover:bg-blue-800 rounded px-3 py-2">Users</a>
             <a href="/admin/rooms" className="block hover:bg-blue-800 rounded px-3 py-2">Rooms</a>
             <a href="/admin/roommates" className="block hover:bg-blue-800 rounded px-3 py-2">Roommates</a>
+            <a href="/admin/reports" className="block hover:bg-blue-800 rounded px-3 py-2">Reports</a>
+            <a href="/admin/feedbacks" className="block hover:bg-blue-800 rounded px-3 py-2">Feedbacks</a>
             <a href="/" className="block text-sm text-blue-200 hover:underline mt-6">Back to Home</a>
           </nav>
         </aside>

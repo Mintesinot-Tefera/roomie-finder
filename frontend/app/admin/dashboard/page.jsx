@@ -142,7 +142,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/app/admin/components/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import  AnalyticsOverview from "@/app/admin/components/AnalyticsOverview";
+import AnalyticsOverview from "@/app/admin/components/AnalyticsOverview";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -193,7 +193,7 @@ const AdminDashboard = () => {
   // }, []);
 
 
-   useEffect(() => {
+  useEffect(() => {
     // Dummy mock data instead of fetching
     const dummyData = {
       signupData: [
@@ -233,16 +233,40 @@ const AdminDashboard = () => {
         <Card><CardContent className="p-4"><p className="text-sm">Total Roommates</p><h3 className="text-2xl font-bold">{stats.totalRoommates}</h3></CardContent></Card>
       </div>
 
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="bg-blue-50">
+          <CardContent className="p-4">
+            <p className="text-sm text-blue-700">Total Users</p>
+            <h3 className="text-2xl font-bold text-blue-900">{stats.totalUsers}</h3>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-indigo-50">
+          <CardContent className="p-4">
+            <p className="text-sm text-indigo-700">Total Rooms</p>
+            <h3 className="text-2xl font-bold text-indigo-900">{stats.totalRooms}</h3>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-green-50">
+          <CardContent className="p-4">
+            <p className="text-sm text-green-700">Total Roommates</p>
+            <h3 className="text-2xl font-bold text-green-900">{stats.totalRoommates}</h3>
+          </CardContent>
+        </Card>
+      </div> */}
+
+
       {/* Chart */}
-      <div className="bg-white rounded-xl shadow p-4">
+      {/* <div className="bg-white rounded-xl shadow p-4">
         <h2 className="text-lg font-semibold mb-4">Users by Role</h2>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData}><XAxis dataKey="name" /><YAxis /><Tooltip /><Bar dataKey="value" fill="#2563eb" /></BarChart>
         </ResponsiveContainer>
-      </div>
+      </div> */}
 
       {/* AnalyticsOverview */}
-      <div className="bg-white rounded-xl shadow p-4">
+      {/* <div className="bg-white rounded-xl shadow p-4">
         <h2 className="text-lg font-semibold mb-4">Analytics Overview</h2>
         <div className="p-6 space-y-6">
           {analytics ? (
@@ -251,7 +275,39 @@ const AdminDashboard = () => {
             <p className="text-gray-500">Loading analytics...</p>
           )}
         </div>
+      </div> */}
+
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Users by Role Chart */}
+        <div className="bg-white rounded-xl shadow p-4">
+          <h2 className="text-lg font-semibold mb-4">Users by Role</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={chartData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="value" fill="#2563eb" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Analytics Overview */}
+        <div className="bg-white rounded-xl shadow p-6">
+          {/* <h2 className="text-lg font-semibold mb-4">Analytics Overview</h2> */}
+          <h2 className="text-lg font-semibold mb-4">User Signups Over Time</h2>
+
+          
+          <div className="p-4">
+            {analytics ? (
+              <AnalyticsOverview data={analytics} />
+            ) : (
+              <p className="text-gray-500">Loading analytics...</p>
+            )}
+          </div>
+        </div>
       </div>
+
 
 
       {/* Recent Signups / Listings */}

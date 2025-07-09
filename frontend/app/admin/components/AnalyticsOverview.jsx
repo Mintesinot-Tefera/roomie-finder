@@ -19,8 +19,8 @@ const AnalyticsOverview = ({ data }) => {
   return (
     <div className="space-y-8">
       {/* User Signups */}
-      <div className="bg-white rounded-xl shadow p-4">
-        <h2 className="text-lg font-semibold mb-2">User Signups Over Time</h2>
+      <div className="bg-white rounded-xl shadow py-2 px-4">
+        {/* <h2 className="text-lg font-semibold mb-2">User Signups Over Time</h2> */}
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={data.signupData}>
             <XAxis dataKey="_id" />
@@ -32,7 +32,7 @@ const AnalyticsOverview = ({ data }) => {
       </div>
 
       {/* Rooms by Region */}
-      <div className="bg-white rounded-xl shadow p-4">
+      {/* <div className="bg-white rounded-xl shadow p-4">
         <h2 className="text-lg font-semibold mb-2">Rooms Listed by Region</h2>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={data.roomByRegion}>
@@ -42,10 +42,10 @@ const AnalyticsOverview = ({ data }) => {
             <Bar dataKey="count" fill="#38bdf8" />
           </BarChart>
         </ResponsiveContainer>
-      </div>
+      </div> */}
 
       {/* Gender Distribution */}
-      <div className="bg-white rounded-xl shadow p-4">
+      {/* <div className="bg-white rounded-xl shadow p-4">
         <h2 className="text-lg font-semibold mb-2">Gender Distribution</h2>
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>
@@ -65,7 +65,7 @@ const AnalyticsOverview = ({ data }) => {
             <Tooltip />
           </PieChart>
         </ResponsiveContainer>
-      </div>
+      </div> */}
     </div>
   );
 };

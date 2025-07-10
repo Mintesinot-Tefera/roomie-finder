@@ -225,8 +225,10 @@ import classNames from "classnames";
 const landlordLinks = [
   { name: "Dashboard", href: "/landlord/dashboard" },
   { name: "My Rooms", href: "/landlord/rooms" },
+  { name: "Applicants", href: "/landlord/applicants" },
   { name: "Messages", href: "/landlord/messages" },
   { name: "Profile", href: "/landlord/profile" },
+  
 ];
 
 export default function LandlordLayout({ children }) {

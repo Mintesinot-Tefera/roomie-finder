@@ -38,7 +38,7 @@ export default function HomePage() {
           </p>
           <div className="space-x-4">
             <a
-              href="/user"
+              href="/home"
               className="inline-block bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 px-6 rounded-lg shadow"
             >
               Get Started

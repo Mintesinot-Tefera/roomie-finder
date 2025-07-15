@@ -29,6 +29,10 @@ const connectDB = require("./config/db");
 const app = express();
 connectDB();
 
+
+// const notFoundHandler = require("./middlewares/notFoundHandler");
+// app.use(notFoundHandler);
+
 app.use(cors());
 app.use(express.json());
 

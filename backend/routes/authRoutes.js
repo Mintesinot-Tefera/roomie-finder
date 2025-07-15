@@ -4,13 +4,32 @@ const router = express.Router();
 const User = require("../models/User");
 // const passport = require("passport");
 // const jwt = require("jsonwebtoken");
+const roleMiddleware = require("../middlewares/roleMiddleware");
 
 
 
 router.post("/register", register);
 router.post("/login", login);
+router.get("/verify-email", authController.verifyEmail);
 
 
+
+router.get("/admin-only", authMiddleware, roleMiddleware("admin"), (req, res) => {
+    res.send("Welcome Admin");
+  });
+  
+
+
+
+
+
+
+
+
+
+
+
+  
 // router.get("/verify-email", async (req, res) => {
 //   const { token } = req.query;
 //   const user = await User.findOne({ verificationToken: token });
@@ -28,27 +47,27 @@ router.post("/login", login);
 
 
 // Email verification route
-router.get("/verify-email", async (req, res) => {
-    const { token } = req.query;
+// router.get("/verify-email", async (req, res) => {
+//     const { token } = req.query;
 
-    try {
-        const user = await User.findOne({ verificationToken: token });
+//     try {
+//         const user = await User.findOne({ verificationToken: token });
 
-        if (!user) {
-            return res.status(400).send("Invalid or expired token.");
-        }
+//         if (!user) {
+//             return res.status(400).send("Invalid or expired token.");
+//         }
 
-        user.isVerified = true;
-        user.verificationToken = undefined;
-        await user.save();
+//         user.isVerified = true;
+//         user.verificationToken = undefined;
+//         await user.save();
 
-        // Redirect to frontend confirmation page
-        res.redirect("http://localhost:3000/verify-success");
-    } catch (err) {
-        console.error("Verification error:", err);
-        res.status(500).send("Internal Server Error");
-    }
-});
+//         // Redirect to frontend confirmation page
+//         res.redirect("http://localhost:3000/verify-success");
+//     } catch (err) {
+//         console.error("Verification error:", err);
+//         res.status(500).send("Internal Server Error");
+//     }
+// });
 
 
 

@@ -137,3 +137,27 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+
+
+exports.verifyEmail = async (req, res) => {
+  const { token } = req.query;
+
+  try {
+    const user = await User.findOne({ verificationToken: token });
+
+    if (!user) {
+      return res.status(400).send("Invalid or expired token.");
+    }
+
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    await user.save();
+
+    res.redirect("http://localhost:3000/verify-success"); // Frontend success page
+  } catch (err) {
+    console.error("Verification error:", err);
+    res.status(500).send("Internal Server Error");
+  }
+};

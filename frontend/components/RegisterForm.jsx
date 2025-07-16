@@ -5,13 +5,13 @@ import { useRouter } from "next/navigation";
 const RegisterForm = () => {
   const router = useRouter();
   const [form, setForm] = useState({
-    fullName: "",
+    fullname: "",
     gender: "",
     age: "",
     location: "",
-    budget: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
   const [errors, setErrors] = useState("");
   const [generalError, setGeneralError] = useState("");
@@ -37,22 +37,33 @@ const RegisterForm = () => {
       // Simple frontend validation
       const newErrors = {};
 
-      if (!form.fullName.trim()) newErrors.fullName = "Full Name is required";
+      if (!form.fullname?.trim()) newErrors.fullname = "Full Name is required";
+      if (!form.email) newErrors.email = "Email is required";
+      else if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = "Invalid email";
       if (!form.gender) newErrors.gender = "Gender is required";
       if (!form.age) newErrors.age = "Age is required";
       if (!form.location) newErrors.location = "Location is required";
-      if (!form.budget) newErrors.budget = "Budget is required";
+      if (!form.password) newErrors.password = "Password is required";
+      if (!form.confirmPassword) newErrors.confirmPassword = "Please confirm your password";
+      if (form.password !== form.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
+
 
       if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors);
         return;
       }
 
+          const { confirmPassword, ...userData } = form;
+
 
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...userData,
+          role: "seeker",
+        }
+        ),
       });
       const data = await res.json();
       // if (!res.ok) return setError(data.message || "Something went wrong");
@@ -81,9 +92,9 @@ const RegisterForm = () => {
       <>
         <input
           type="text"
-          name="fullName"
+          name="fullname"
           placeholder="Full Name"
-          value={form.fullName}
+          value={form.fullname}
           onChange={handleChange}
           required
           className="w-full px-4 py-2 border rounded-md"
@@ -117,15 +128,6 @@ const RegisterForm = () => {
           required
           className="w-full px-4 py-2 border rounded-md"
         />
-        <input
-          type="number"
-          name="budget"
-          placeholder="Monthly Budget"
-          value={form.budget}
-          onChange={handleChange}
-          required
-          className="w-full px-4 py-2 border rounded-md"
-        />
 
         <input
           type="email"
@@ -147,6 +149,18 @@ const RegisterForm = () => {
           required
           className="w-full px-4 py-2 border rounded-md"
         />
+        <input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          value={form.confirmPassword}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border rounded-md"
+        />
+        {errors.confirmPassword && (
+          <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+        )}
       </>
       {generalError && (
         <div className="text-red-600 text-sm text-center mb-2">

@@ -62,7 +62,7 @@ const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 
 exports.register = async (req, res) => {
-  const { fullname, email, password } = req.body;
+  const { fullname, email, password, role } = req.body;
 
   try {
     // Check if user exists
@@ -80,6 +80,7 @@ exports.register = async (req, res) => {
       fullname,
       email,
       password: hashedPassword,
+      role: role || "seeker", // default to "seeker" if not provided
       isVerified: false,
       verificationToken,
     });
@@ -104,6 +105,8 @@ exports.register = async (req, res) => {
   }
 };
 
+
+
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -124,13 +127,14 @@ exports.login = async (req, res) => {
     // Create JWT token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-    res.json({
+    res.status(200).json({
       token,
       user: {
         id: user._id,
         fullname: user.fullname,
         email: user.email,
         role: user.role,
+        isVerified: user.isVerified,
       },
     });
   } catch (err) {

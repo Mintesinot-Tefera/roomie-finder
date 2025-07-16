@@ -29,9 +29,9 @@ const LoginForm = () => {
     try {
       const newErrors = {};
 
-      if (!form.email) newErrors.gender = "Email is required";
-      if (!form.password) newErrors.age = "Password is required";
-     
+      if (!form.email) newErrors.email = "Email is required";
+      if (!form.password) newErrors.password = "Password is required";
+
       if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors);
         return;
@@ -43,14 +43,25 @@ const LoginForm = () => {
         body: JSON.stringify(form),
       });
       const data = await res.json();
-      if (!res.ok) return setErrors(data.message || "Login failed");
+      if (!res.ok) {
+        setGeneralError(data.message || "Login failed");
+        return
+      }
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("role", user.role);
+      localStorage.setItem("role", data.user.role);
 
-      router.push("/");
+
+      if (data.user.role === "admin") {
+        router.push("/admin/dashboard");
+      } else if (data.user.role === "landlord") {
+        router.push("/landlord/dashboard");
+      } else {
+        router.push("/seeker");
+      }
+      // router.push("/");
     } catch {
-      setErrors("Network error");
+      setGeneralError("Network error. Please try again.");
     } finally {
       setLoading(false);
     }

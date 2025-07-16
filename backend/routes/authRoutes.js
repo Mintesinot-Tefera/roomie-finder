@@ -1,22 +1,22 @@
 const express = require("express");
-const { register, login } = require("../controllers/authController");
+const { register, login, verifyEmail } = require("../controllers/authController");
 const router = express.Router();
 const User = require("../models/User");
 // const passport = require("passport");
 // const jwt = require("jsonwebtoken");
-const roleMiddleware = require("../middlewares/roleMiddleware");
+const roleMiddleware = require("../middleware/roleMiddleware");
 
 
 
 router.post("/register", register);
 router.post("/login", login);
-router.get("/verify-email", authController.verifyEmail);
+router.get("/verify-email", verifyEmail);
 
 
 
-router.get("/admin-only", authMiddleware, roleMiddleware("admin"), (req, res) => {
-    res.send("Welcome Admin");
-  });
+// router.get("/admin-only", authMiddleware, roleMiddleware("admin"), (req, res) => {
+//     res.send("Welcome Admin");
+//   });
   
 
 

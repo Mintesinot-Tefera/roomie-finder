@@ -53,7 +53,7 @@ const RegisterForm = () => {
         return;
       }
 
-          const { confirmPassword, ...userData } = form;
+      const { confirmPassword, ...userData } = form;
 
 
       const res = await fetch(endpoint, {

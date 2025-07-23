@@ -40,6 +40,7 @@ const LoginForm = () => {
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(form),
       });
       const data = await res.json();
@@ -48,7 +49,7 @@ const LoginForm = () => {
         return
       }
 
-      localStorage.setItem("token", data.token);
+      // localStorage.setItem("token", data.token);
       localStorage.setItem("role", data.user.role);
 
 

@@ -5,25 +5,62 @@ import { useRouter } from "next/navigation";
 export default function HomePage() {
   const router = useRouter();
 
-  useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    if (!user) return;
+  // useEffect(() => {
+  //   const user = JSON.parse(sessionStorage.getItem("user"));
+  //   if (!user) return;
 
-    // Role-based redirect
-    switch (user.role) {
-      case "admin":
-        router.replace("/admin/dashboard");
-        break;
-      case "landlord":
-        router.replace("/landlord");
-        break;
-      case "seeker":
-        router.replace("/seeker");
-        break;
-      default:
-        break;
-    }
-  }, []);
+  //   // Role-based redirect
+  //   switch (user.role) {
+  //     case "admin":
+  //       router.replace("/admin/dashboard");
+  //       break;
+  //     case "landlord":
+  //       router.replace("/landlord");
+  //       break;
+  //     case "seeker":
+  //       router.replace("/seeker");
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    const checkUserRole = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/user/profile", {
+          method: "GET",
+          credentials: "include", // Send cookie
+        });
+
+        if (!res.ok) {
+          console.log("Not logged in or token invalid.");
+          return;
+        }
+
+        const user = await res.json();
+
+        switch (user.role) {
+          case "admin":
+            router.replace("/admin/dashboard");
+            break;
+          case "landlord":
+            router.replace("/landlord");
+            break;
+          case "seeker":
+            router.replace("/seeker");
+            break;
+          default:
+            break;
+        }
+      } catch (err) {
+        console.error("Error fetching user role", err);
+      }
+    };
+
+    checkUserRole();
+  }, [router]);
+
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col justify-center items-center px-6 py-16">

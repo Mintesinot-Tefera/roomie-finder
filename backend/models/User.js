@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+
 
 const userSchema = new mongoose.Schema({
   // Common fields for all users
@@ -30,7 +32,12 @@ const userSchema = new mongoose.Schema({
   isSuspended: { type: Boolean, default: false },
   flagged:     { type: Boolean, default: false },
 
-}, { timestamps: true });
+}, { timestamps: true });userSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+
+
 
 module.exports = mongoose.model("User", userSchema);
 

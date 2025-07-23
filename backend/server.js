@@ -33,13 +33,25 @@ connectDB();
 // const notFoundHandler = require("./middlewares/notFoundHandler");
 // app.use(notFoundHandler);
 
-app.use(cors());
+// app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // ✅ frontend origin
+    credentials: true,              // ✅ allow cookies to be sent
+  })
+);
 app.use(express.json());
 
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
 app.use("/api/auth", require("./routes/authRoutes"));
 // app.use("/api/dashboard", require("./routes/dashboardRoutes"));
 app.use("/api/user", require("./routes/userRoutes"));
+
+
+const roomRoutes = require("./routes/roomRoutes");
+app.use("/api/rooms", roomRoutes);
 
 
 

@@ -124,11 +124,15 @@
 
 import { useEffect, useState } from "react";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
+import useRoleGuard from "@/hooks/useRoleGuard";
+
 
 const DashboardPage = () => {
   const isLoading = useAuthRedirect(); // redirect if not logged in
   const [user, setUser] = useState(null);
   const [fetching, setFetching] = useState(true);
+  useRoleGuard(["seeker"]);
+
 
   useEffect(() => {
     const fetchProfile = async () => {

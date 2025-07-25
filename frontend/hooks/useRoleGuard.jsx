@@ -52,4 +52,3 @@ const useRoleGuard = (allowedRoles = []) => {
 };
 
 export default useRoleGuard;
-andlord/dashboard

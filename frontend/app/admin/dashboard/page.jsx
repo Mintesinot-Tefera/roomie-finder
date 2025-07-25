@@ -144,7 +144,11 @@ import { Card, CardContent } from "@/app/admin/components/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import AnalyticsOverview from "@/app/admin/components/AnalyticsOverview";
 
+import useAuthRedirect from "@/hooks/useAuthRedirect";
+import useRoleGuard from "@/hooks/useRoleGuard";
+
 const AdminDashboard = () => {
+  const [user, setUser] = useState(null);
   const [stats, setStats] = useState({
     totalUsers: 120,
     totalRooms: 35,
@@ -177,6 +181,10 @@ const AdminDashboard = () => {
     { name: "Seekers", value: stats.userRoles.seeker },
   ];
   const [analytics, setAnalytics] = useState(null);
+
+  const isLoading = useAuthRedirect(); // redirect if not logged in
+  const [fetching, setFetching] = useState(true);
+  useRoleGuard(["admin"]);
 
   // useEffect(() => {
   //   const fetchAnalytics = async () => {
@@ -221,6 +229,19 @@ const AdminDashboard = () => {
       setAnalytics(dummyData);
     }, 800); // simulate loading
   }, []);
+
+
+
+
+    if (isLoading || fetching) {
+    return <div className="text-center mt-10">Loading your dashboard...</div>;
+  }
+
+   if (!user) {
+    return <div className="text-center text-red-500">User not found or unauthorized</div>;
+  }
+
+
 
   return (
     <div className="p-6 space-y-6">
@@ -297,7 +318,7 @@ const AdminDashboard = () => {
           {/* <h2 className="text-lg font-semibold mb-4">Analytics Overview</h2> */}
           <h2 className="text-lg font-semibold mb-4">User Signups Over Time</h2>
 
-          
+
           <div className="p-4">
             {analytics ? (
               <AnalyticsOverview data={analytics} />

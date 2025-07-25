@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/card";
+import useAuthRedirect from "@/hooks/useAuthRedirect";
+import useRoleGuard from "@/hooks/useRoleGuard";
+
 
 const dummyRooms = [
   {
@@ -23,8 +26,25 @@ const dummyRooms = [
 ];
 
 const LandlordDashboard = () => {
+  // const [user, setUser] = useState(null);
   const [rooms, setRooms] = useState(dummyRooms);
   const approvedRooms = rooms.filter((r) => r.status === "Approved").length;
+  const isLoading = useAuthRedirect(); // redirect if not logged in
+  const [fetching, setFetching] = useState(true);
+  useRoleGuard(["landlord"]);
+
+
+  // if (isLoading || fetching) {
+  if (isLoading) {
+
+    return <div className="text-center mt-10">Loading your dashboard...</div>;
+  }
+
+   if (!user) {
+    return <div className="text-center text-red-500">User not found or unauthorized</div>;
+  }
+
+
 
   return (
     <div className="p-6 space-y-6">
@@ -73,11 +93,10 @@ const LandlordDashboard = () => {
                 <td className="px-4 py-2">{room.rent} ETB</td>
                 <td className="px-4 py-2">
                   <span
-                    className={`px-2 py-1 text-xs rounded-full ${
-                      room.status === "Approved"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-yellow-100 text-yellow-700"
-                    }`}
+                    className={`px-2 py-1 text-xs rounded-full ${room.status === "Approved"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-yellow-100 text-yellow-700"
+                      }`}
                   >
                     {room.status}
                   </span>

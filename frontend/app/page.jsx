@@ -30,6 +30,7 @@ export default function HomePage() {
       try {
         const res = await fetch("http://localhost:5000/api/user/profile", {
           method: "GET",
+          // secure: true, // only if in production   
           credentials: "include", // Send cookie
         });
 

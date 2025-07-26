@@ -38,12 +38,14 @@ const RoomForm = () => {
     setMessage("");
 
     try {
+   
+
       const res = await fetch("http://localhost:5000/api/rooms", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        credentials: "include",
         body: JSON.stringify({
           ...form,
           amenities: form.amenities.split(",").map((a) => a.trim()),

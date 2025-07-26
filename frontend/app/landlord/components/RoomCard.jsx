@@ -11,17 +11,31 @@ const statusColors = {
 const RoomCard = ({ room }) => {
   return (
     <div className="border rounded-lg shadow-sm p-4 bg-white">
-      {room.imageUrl && (
+      {room.images && room.images.length > 0 && (
+        <img
+          src={room.images[0]}
+          alt={room.title}
+          className="w-full h-40 object-cover rounded mb-3"
+        />
+      )}
+      {/* {room.imageUrl && (
         <img
           src={room.imageUrl}
           alt={room.title}
           className="w-full h-40 object-cover rounded mb-3"
         />
-      )}
+      )} */}
       <h3 className="text-lg font-semibold">{room.title}</h3>
       <p className="text-gray-500">{room.location}</p>
-      <p className="text-sm text-gray-600 mb-2">${room.price} / month</p>
-      <div className={`inline-block px-2 py-1 text-xs font-medium rounded ${statusColors[room.status]}`}>
+      <p className="text-sm text-gray-600 mb-2">${room.rent} / month</p>
+      {/* <div className={`inline-block px-2 py-1 text-xs font-medium rounded ${statusColors[room.status]}`}>
+        {room.status}
+      </div> */}
+      <div
+        className={`inline-block px-2 py-1 text-xs font-medium rounded ${
+          statusColors[room.status.charAt(0).toUpperCase() + room.status.slice(1)]
+        }`}
+      >
         {room.status}
       </div>
       <div className="mt-4 flex gap-4">

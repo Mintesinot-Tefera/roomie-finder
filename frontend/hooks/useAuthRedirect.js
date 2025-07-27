@@ -42,36 +42,64 @@
 // export default useAuthRedirect;
 
 
+
+
+
+
+
+
+// "use client";
+// import { useEffect, useState } from "react";
+// import { useRouter } from "next/navigation";
+
+// const useAuthRedirect = () => {
+//   const router = useRouter();
+//   const [isLoading, setIsLoading] = useState(true);
+
+//   useEffect(() => {
+//     const checkAuth = async () => {
+//       try {
+//         const res = await fetch("http://localhost:5000/api/user/profile", {
+//           credentials: "include", // this sends the HTTP-only cookie
+//         });
+
+//         if (!res.ok) {
+//           router.push("/signin");
+//           return;
+//         }
+
+//         setIsLoading(false); // User is authenticated
+//       } catch (err) {
+//         router.push("/signin");
+//       }
+//     };
+
+//     checkAuth();
+//   }, [router]);
+
+//   return isLoading;
+// };
+
+// export default useAuthRedirect;
+
+
+
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext"; // adjust import path
 
 const useAuthRedirect = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, loading } = useAuth();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await fetch("http://localhost:5000/api/user/profile", {
-          credentials: "include", // this sends the HTTP-only cookie
-        });
+    if (!loading && !user) {
+      router.push("/signin");
+    }
+  }, [loading, user, router]);
 
-        if (!res.ok) {
-          router.push("/signin");
-          return;
-        }
-
-        setIsLoading(false); // User is authenticated
-      } catch (err) {
-        router.push("/signin");
-      }
-    };
-
-    checkAuth();
-  }, [router]);
-
-  return isLoading;
+  return loading; // true if still loading
 };
 
 export default useAuthRedirect;

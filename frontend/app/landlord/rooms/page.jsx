@@ -4,6 +4,9 @@ import RoomCard from "../components/RoomCard";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
+import useRoleGuard from "@/hooks/useRoleGuard";
+import { useAuth } from '@/context/AuthContext';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 
 
@@ -38,63 +41,50 @@ import useAuthRedirect from "@/hooks/useAuthRedirect";
 
 const RoomListPage = () => {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const { user, loading } = useAuth(); // global user context
+
+  // const [user, setUser] = useState(null);
 
   const [rooms, setRooms] = useState([]);
   // const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [fetching, setFetching] = useState(true);
-  const isLoading = useAuthRedirect(); // redirect if not logged in
-
+  useAuthRedirect();
+  useRoleGuard(["landlord"]);
 
   const handleNavigate = () => {
     router.push("/landlord/rooms/create");
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // 1. Fetch user
-        const userRes = await fetch("http://localhost:5000/api/user/profile", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+    if (!loading && user) {
+      const fetchRooms = async () => {
+        try {
+          const res = await fetch("http://localhost:5000/api/rooms/landlord", {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include", // important for cookies
+          });
 
-        if (!userRes.ok) {
-          console.error("Failed to fetch profile:", userRes.statusText);
-          return;
+          if (!res.ok) throw new Error("Failed to fetch rooms");
+
+          const roomData = await res.json();
+          setRooms(roomData);
+        } catch (err) {
+          console.error("Error fetching landlord rooms:", err);
+        } finally {
+          setFetching(false);
         }
+      };
+      fetchRooms();
+    }
+  }, [loading, user]);
 
-        const userData = await userRes.json();
-        setUser(userData);
 
-        // 2. Fetch rooms created by landlord
 
-        const res = await fetch("http://localhost:5000/api/rooms/landlord", {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include", // Send cookies for auth
-        });
-        if (!res.ok) throw new Error(data.message || "Failed to fetch rooms");
-
-        const data = await res.json();
-        setRooms(data);
-      } catch (err) {
-        console.error("Error fetching landlord rooms:", err.message);
-        // setError(err.message);
-      } finally {
-        setFetching(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-   if (isLoading || fetching) {
-    return <div className="text-center mt-10">Loading your dashboard...</div>;
+  if (loading || fetching) {
+    return <LoadingSpinner />
+    // return <div className="text-center mt-10">Loading your dashboard...</div>;
   }
   // if (loading) return <p className="p-6">Loading...</p>;
 

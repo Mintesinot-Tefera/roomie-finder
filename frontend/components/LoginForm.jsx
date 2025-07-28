@@ -1,8 +1,12 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext"; 
+
 
 const LoginForm = () => {
+  const { setUser } = useAuth();
+
   const router = useRouter();
   const [form, setForm] = useState({
     email: "",
@@ -52,15 +56,21 @@ const LoginForm = () => {
       // localStorage.setItem("token", data.token);
       // localStorage.setItem("role", data.user.role);
 
+      setUser(data.user)
+
 
       if (data.user.role === "admin") {
         router.push("/admin/dashboard");
       } else if (data.user.role === "landlord") {
+
         router.push("/landlord/dashboard");
       } else {
         router.push("/seeker");
       }
       // router.push("/");
+
+      router.refresh();
+
     } catch {
       setGeneralError("Network error. Please try again.");
     } finally {

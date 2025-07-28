@@ -110,7 +110,9 @@ exports.login = async (req, res) => {
     httpOnly: true,
     // secure: true,
     secure: process.env.NODE_ENV === "production", // only over HTTPS in prod  
-    sameSite: "strict",
+    // sameSite: "strict",
+      sameSite: 'lax',
+
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 

@@ -21,9 +21,17 @@ export const AuthProvider = ({ children }) => {
         // const data = await res.json();
         // if (res.ok) setUser(data);
 
-        if (!res.ok) throw new Error('Not authenticated');
-        const data = await res.json();
-        setUser(data);
+        // if (!res.ok) throw new Error('Not authenticated');
+        // const data = await res.json();
+        // setUser(data);
+
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data);
+        } else {
+          // Not authenticated — set user to null but no need to throw
+          setUser(null);
+        }
 
       } catch (err) {
         setUser(null);
@@ -39,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, loading, setUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -235,6 +235,10 @@ export default function LandlordLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
 
+  const { user, loading } = useAuth(); // ✅ global auth check
+  useAuthRedirect(); // ✅ redirect to signin if not logged in
+  useRoleGuard(["landlord"]); // ✅ restrict to landlord role only
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -263,6 +267,15 @@ export default function LandlordLayout({ children }) {
     localStorage.removeItem("fullname");
     router.push("/signin");
   };
+
+  // ✅ protect layout from rendering until auth state is determined
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex">

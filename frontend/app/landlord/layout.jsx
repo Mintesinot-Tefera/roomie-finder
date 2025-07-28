@@ -221,6 +221,10 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { HiMenu, HiX, HiUserCircle, HiBell } from "react-icons/hi";
 import classNames from "classnames";
+import { useAuth } from "@/context/AuthContext"; 
+import useAuthRedirect from "@/hooks/useAuthRedirect";
+import useRoleGuard from "@/hooks/useRoleGuard";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const landlordLinks = [
   { name: "Dashboard", href: "/landlord/dashboard" },

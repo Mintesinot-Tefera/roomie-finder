@@ -2,15 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/card";
-import useAuthRedirect from "@/hooks/useAuthRedirect";
-import useRoleGuard from "@/hooks/useRoleGuard";
+// import useAuthRedirect from "@/hooks/useAuthRedirect";
+// import useRoleGuard from "@/hooks/useRoleGuard";
 import { useAuth } from '@/context/AuthContext';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 
 const LandlordDashboard = () => {
-  const { user, loading } = useAuth(); // global user context
-
+  const { user } = useAuth();
   // const [user, setUser] = useState(null);
   const [rooms, setRooms] = useState([]);
 
@@ -18,59 +17,21 @@ const LandlordDashboard = () => {
   // const approvedRooms = rooms.filter((r) => r.status === "Approved").length;
   // const isLoading = useAuthRedirect(); // redirect if not logged in
   const [fetching, setFetching] = useState(true);
-  useAuthRedirect();
-  useRoleGuard(["landlord"]);
 
 
 
 
+  // const { user, loading } = useAuth(); // global user context
+  // useAuthRedirect();
+  // useRoleGuard(["landlord"]);
 
 
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       // 1. Fetch user
-  //       const userRes = await fetch("http://localhost:5000/api/user/profile", {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         credentials: "include",
-  //       });
-
-  //       if (!userRes.ok) {
-  //         console.error("Failed to fetch profile:", userRes.statusText);
-  //         return;
-  //       }
-
-  //       const userData = await userRes.json();
-  //       setUser(userData);
-
-
-  //       // 2. Fetch rooms created by landlord
-  //       const res = await fetch("http://localhost:5000/api/rooms/landlord", {
-  //         method: "GET",
-  //         headers: { "Content-Type": "application/json" },
-  //         credentials: "include", // important for cookies
-  //       });
-
-  //       if (!res.ok) throw new Error("Failed to fetch rooms");
-
-  //       const roomData = await res.json();
-  //       setRooms(roomData);
-  //     } catch (err) {
-  //       console.error("Error fetching landlord rooms:", err);
-  //     } finally {
-  //       setFetching(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   useEffect(() => {
-    if (!loading && user) {
+    // if (!loading && user) {
+    if (user) {
+
       const fetchRooms = async () => {
         try {
           const res = await fetch("http://localhost:5000/api/rooms/landlord", {
@@ -91,19 +52,19 @@ const LandlordDashboard = () => {
       };
       fetchRooms();
     }
-  }, [loading, user]);
+  }, [user]);
+
+  // }, [loading, user]);
 
   const approvedRooms = rooms.filter((room) => room.status === "approved").length;
 
 
-  if (loading || fetching) {
+  // if (loading || fetching) {
+  if (fetching) {
     return <LoadingSpinner />
     // <div className="text-center mt-10">Loading your dashboard...</div>;
   }
 
-  // if (!user) {
-  //   return <div className="text-center text-red-500">User not found or unauthorized</div>;
-  // }
 
   return (
     <div className="p-6 space-y-6">

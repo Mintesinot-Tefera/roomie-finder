@@ -25,12 +25,22 @@ export const AuthProvider = ({ children }) => {
         // const data = await res.json();
         // setUser(data);
 
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data);
-        } else {
-          // Not authenticated — set user to null but no need to throw
+
+
+        // if (res.ok) {
+        //   const data = await res.json();
+        //   setUser(data);
+        // } else {
+        //   // Not authenticated — set user to null but no need to throw
+        //   setUser(null);
+        // }
+
+
+        if (!res.ok) {
           setUser(null);
+        } else {
+          const data = await res.json();
+          setUser(data.user); // or just `data` depending on your backend
         }
 
       } catch (err) {

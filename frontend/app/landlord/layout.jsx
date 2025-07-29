@@ -248,10 +248,10 @@ export default function LandlordLayout({ children }) {
   const dropdownRef = useRef(null);
   const [fullname, setFullname] = useState("");
 
-  useEffect(() => {
-    const name = localStorage.getItem("fullname");
-    if (name) setFullname(name);
-  }, []);
+  // useEffect(() => {
+  //   const name = localStorage.getItem("fullname");
+  //   if (name) setFullname(name);
+  // }, []);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -280,6 +280,7 @@ export default function LandlordLayout({ children }) {
       </div>
     );
   }
+  if (!user) return null;
 
   return (
     <div className="min-h-screen flex">

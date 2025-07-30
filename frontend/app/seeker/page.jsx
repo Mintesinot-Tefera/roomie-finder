@@ -125,51 +125,87 @@
 import { useEffect, useState } from "react";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
 import useRoleGuard from "@/hooks/useRoleGuard";
+import { useAuth } from "@/context/AuthContext";
+import LoadingSpinner from "@/components/LoadingSpinner";
+
+
 
 
 const DashboardPage = () => {
-  const isLoading = useAuthRedirect(); // redirect if not logged in
-  const [user, setUser] = useState(null);
-  const [fetching, setFetching] = useState(true);
+  // // const isLoading = useAuthRedirect(); // redirect if not logged in
+  // // const [user, setUser] = useState(null);
+  // const [fetching, setFetching] = useState(true);
+
+
+  // const { user, loading } = useAuth(); // ✅ global auth check
+  // useAuthRedirect(); // ✅ redirect to signin if not logged in
+  // useRoleGuard(["seeker"]);
+
+
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     try {
+  //       const res = await fetch("http://localhost:5000/api/user/profile", {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         credentials: "include", // ✅ Required to send HTTP-only cookie
+  //       });
+
+  //       if (!res.ok) {
+  //         console.error("Failed to fetch profile:", res.statusText);
+  //         return;
+  //       }
+
+  //       const data = await res.json();
+  //       setUser(data);
+  //     } catch (err) {
+  //       console.error("Error fetching profile:", err);
+  //     } finally {
+  //       setFetching(false);
+  //     }
+  //   };
+
+  //   fetchProfile();
+  // }, []);
+
+  // // if (isLoading || fetching) {
+  // //   return <div className="text-center mt-10">Loading your dashboard...</div>;
+  // // }
+
+  // // if (!user) {
+  // //   return <div className="text-center text-red-500">User not found or unauthorized</div>;
+  // // }
+
+  // // ✅ protect layout from rendering until auth state is determined
+  // if (loading || fetching) {
+  //   return (
+  //     <div className="h-screen flex items-center justify-center">
+  //       <LoadingSpinner />
+  //     </div>
+  //   );
+  // }
+  // if (!user) return null;
+
+
+
+
+  const { user, loading } = useAuth();
+
+  useAuthRedirect();
   useRoleGuard(["seeker"]);
 
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await fetch("http://localhost:5000/api/user/profile", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include", // ✅ Required to send HTTP-only cookie
-        });
-
-        if (!res.ok) {
-          console.error("Failed to fetch profile:", res.statusText);
-          return;
-        }
-
-        const data = await res.json();
-        setUser(data);
-      } catch (err) {
-        console.error("Error fetching profile:", err);
-      } finally {
-        setFetching(false);
-      }
-    };
-
-    fetchProfile();
-  }, []);
-
-  if (isLoading || fetching) {
-    return <div className="text-center mt-10">Loading your dashboard...</div>;
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
-  if (!user) {
-    return <div className="text-center text-red-500">User not found or unauthorized</div>;
-  }
-
+  if (!user) return null;
+  
   return (
     <div className="max-w-xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Welcome, {user.fullname}</h1>

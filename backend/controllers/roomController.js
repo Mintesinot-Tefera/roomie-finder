@@ -33,6 +33,48 @@ exports.getRoom = async (req, res) => {
 };
 
 
+// GET /api/rooms/:id
+exports.getSingleRoom = async (req, res) => {
+  try {
+    const room = await Room.findOne({
+      _id: req.params.id,
+      createdBy: req.user.id, // ensure the room belongs to this landlord
+    });
+
+    if (!room) {
+      return res.status(404).json({ message: "Room not found" });
+    }
+
+    res.status(200).json(room);
+  } catch (error) {
+    console.error("Error fetching room:", error);
+    res.status(500).json({ message: "Failed to fetch room" });
+  }
+};
+
+
+// PUT /api/rooms/:id
+exports.updateRoom = async (req, res) => {
+  try {
+    const updatedRoom = await Room.findOneAndUpdate(
+      { _id: req.params.id, createdBy: req.user.id },
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedRoom) {
+      return res.status(404).json({ message: "Room not found or not authorized" });
+    }
+
+    res.status(200).json({ message: "Room updated successfully", room: updatedRoom });
+  } catch (error) {
+    console.error("Error updating room:", error);
+    res.status(500).json({ message: "Failed to update room" });
+  }
+};
+
+
+
 // router.get("/my-rooms", verifyToken, async (req, res) => {
 //   try {
 //     const rooms = await Room.find({ createdBy: req.user.id }).sort({ createdAt: -1 });

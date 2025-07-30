@@ -4,7 +4,6 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 
 
 const AuthContext = createContext();
-export const useAuth = () => useContext(AuthContext);
 
 
 export const AuthProvider = ({ children }) => {
@@ -40,7 +39,7 @@ export const AuthProvider = ({ children }) => {
           setUser(null);
         } else {
           const data = await res.json();
-          setUser(data.user); // or just `data` depending on your backend
+          setUser(data); // or just `data` depending on your backend
         }
 
       } catch (err) {
@@ -57,8 +56,10 @@ export const AuthProvider = ({ children }) => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <AuthContext.Provider value={{ user, loading, setUser }}>
+    <AuthContext.Provider value={{ user, loading, setUser  }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);

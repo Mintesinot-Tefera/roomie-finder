@@ -9,7 +9,7 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 
 
 const LandlordDashboard = () => {
-  const { user } = useAuth();
+  // const { user } = useAuth();
   // const [user, setUser] = useState(null);
   const [rooms, setRooms] = useState([]);
 
@@ -30,7 +30,7 @@ const LandlordDashboard = () => {
 
   useEffect(() => {
     // if (!loading && user) {
-    if (user) {
+    // if (user) {
 
       const fetchRooms = async () => {
         try {
@@ -52,7 +52,9 @@ const LandlordDashboard = () => {
       };
       fetchRooms();
     }
-  }, [user]);
+  // }, [user]);
+
+  , []);
 
   // }, [loading, user]);
 

@@ -3,61 +3,35 @@
 import RoomCard from "../components/RoomCard";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import useAuthRedirect from "@/hooks/useAuthRedirect";
-import useRoleGuard from "@/hooks/useRoleGuard";
-import { useAuth } from '@/context/AuthContext';
+// import useAuthRedirect from "@/hooks/useAuthRedirect";
+// import useRoleGuard from "@/hooks/useRoleGuard";
+// import { useAuth } from '@/context/AuthContext';
 import LoadingSpinner from '@/components/LoadingSpinner';
-
-
-
-// const dummyRooms = [
-//   {
-//     _id: "1",
-//     title: "Modern Studio",
-//     location: "Addis Ababa",
-//     price: 3500,
-//     imageUrl: "/room1.jpg",
-//     status: "Pending",
-//   },
-//   {
-//     _id: "2",
-//     title: "Shared Apartment",
-//     location: "Bole",
-//     price: 2500,
-//     imageUrl: "/room2.jpg",
-//     status: "Approved",
-//   },
-//   {
-//     _id: "3",
-//     title: "Luxury Room",
-//     location: "Kazanchis",
-//     price: 4500,
-//     imageUrl: "/room3.jpg",
-//     status: "Rejected",
-//   },
-// ];
 
 
 
 const RoomListPage = () => {
   const router = useRouter();
-  const { user, loading } = useAuth(); // global user context
 
+  // const { user, loading } = useAuth(); // global user context
   // const [user, setUser] = useState(null);
 
   const [rooms, setRooms] = useState([]);
+
   // const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState("");
   const [fetching, setFetching] = useState(true);
-  useAuthRedirect();
-  useRoleGuard(["landlord"]);
+
+  // useAuthRedirect();
+  // useRoleGuard(["landlord"]);
 
   const handleNavigate = () => {
     router.push("/landlord/rooms/create");
   };
 
   useEffect(() => {
-    if (!loading && user) {
+    // if (!loading && user) {
       const fetchRooms = async () => {
         try {
           const res = await fetch("http://localhost:5000/api/rooms/landlord", {
@@ -78,11 +52,15 @@ const RoomListPage = () => {
       };
       fetchRooms();
     }
-  }, [loading, user]);
+    
+  // }, [loading, user]);
+
+  , []);
 
 
+  // if (loading || fetching) {
 
-  if (loading || fetching) {
+  if (fetching) {
     return <LoadingSpinner />
     // return <div className="text-center mt-10">Loading your dashboard...</div>;
   }

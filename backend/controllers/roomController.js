@@ -1,22 +1,59 @@
 const Room = require("../models/Room");
 
 exports.createRoom = async (req, res) => {
-  const { title, description, rent, location, amenities, availability, images } = req.body;
+  // const { title, description, rent, location, amenities, availability, images } = req.body;
 
   try {
-    const room = await Room.create({
+
+    const {
       title,
       description,
       rent,
       location,
       amenities,
       availability,
-      images,
-      createdBy: req.user.id, // comes from auth middleware
+    } = req.body;
+
+    // const images = req.files.map(
+    //   (file) => `${req.protocol}://${req.get("host")}/uploads/${file.filename}`
+    // );
+
+    const images = req.files.map((file) => {
+      return `${req.protocol}://${req.get("host")}/uploads/${file.filename}`;
     });
+
+
+    console.log("Request body:", req.body);
+    console.log("Request files:", req.files);
+
+
+    const room = await Room.create({
+      title,
+      description,
+      rent: Number(rent),
+      location,
+      amenities: Array.isArray(amenities) ? amenities : [amenities],
+      amenities,
+      availability,
+      images,
+      createdBy: req.user.id,
+
+    });
+
+    // const room = await Room.create({
+    //   title,
+    //   description,
+    //   rent,
+    //   location,
+    //   amenities,
+    //   availability,
+    //   images: `/uploads/${req.file.filename}`, // store image path
+    //   createdBy: req.user.id, // comes from auth middleware
+    // });
 
     res.status(201).json({ message: "Room created successfully", room });
   } catch (err) {
+    console.error("Room creation error:", err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -72,6 +109,7 @@ exports.updateRoom = async (req, res) => {
     res.status(500).json({ message: "Failed to update room" });
   }
 };
+
 
 
 

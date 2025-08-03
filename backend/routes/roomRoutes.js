@@ -6,11 +6,20 @@ const { createRoom, getRoom,
 
 const authMiddleware = require("../middleware/authMiddleware");
 
-router.post("/", authMiddleware, createRoom); // POST /api/rooms
+const upload = require("../utils/upload"); // multer config (single image)
+
+
+
+
+router.post("/", authMiddleware, upload.array("images", 5), createRoom); // POST /api/rooms
+// router.post("/", authMiddleware, upload.single("image"), createRoom); // POST /api/rooms
 router.get("/landlord", authMiddleware, getRoom); // GET /api/rooms
+
+
 
 // Edit-specific routes
 router.get("/:id", authMiddleware, getSingleRoom);
 router.put("/:id", authMiddleware, updateRoom);
+
 
 module.exports = router;

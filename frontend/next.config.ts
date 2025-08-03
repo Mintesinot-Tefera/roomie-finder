@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
     // turbo: false, // <- you can remove or comment this
   },
   /* config options here */
+  images: {
+    domains: ['localhost'],
+  },
 };
 
 export default nextConfig;

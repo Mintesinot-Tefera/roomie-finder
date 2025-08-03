@@ -14,6 +14,7 @@ const RoomCard = ({ room }) => {
       {room.images && room.images.length > 0 && (
         <img
           src={room.images[0]}
+          // src={room.images[2]}
           alt={room.title}
           className="w-full h-40 object-cover rounded mb-3"
         />
@@ -32,9 +33,8 @@ const RoomCard = ({ room }) => {
         {room.status}
       </div> */}
       <div
-        className={`inline-block px-2 py-1 text-xs font-medium rounded ${
-          statusColors[room.status.charAt(0).toUpperCase() + room.status.slice(1)]
-        }`}
+        className={`inline-block px-2 py-1 text-xs font-medium rounded ${statusColors[room.status.charAt(0).toUpperCase() + room.status.slice(1)]
+          }`}
       >
         {room.status}
       </div>

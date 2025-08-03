@@ -30,32 +30,33 @@ const RoomListPage = () => {
     router.push("/landlord/rooms/create");
   };
 
+
   useEffect(() => {
     // if (!loading && user) {
-      const fetchRooms = async () => {
-        try {
-          const res = await fetch("http://localhost:5000/api/rooms/landlord", {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include", // important for cookies
-          });
+    const fetchRooms = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/rooms/landlord", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include", // important for cookies
+        });
 
-          if (!res.ok) throw new Error("Failed to fetch rooms");
+        if (!res.ok) throw new Error("Failed to fetch rooms");
 
-          const roomData = await res.json();
-          setRooms(roomData);
-        } catch (err) {
-          console.error("Error fetching landlord rooms:", err);
-        } finally {
-          setFetching(false);
-        }
-      };
-      fetchRooms();
-    }
-    
-  // }, [loading, user]);
+        const roomData = await res.json();
+        setRooms(roomData);
+      } catch (err) {
+        console.error("Error fetching landlord rooms:", err);
+      } finally {
+        setFetching(false);
+      }
+    };
+    fetchRooms();
+  }
 
-  , []);
+    // }, [loading, user]);
+
+    , []);
 
 
   // if (loading || fetching) {

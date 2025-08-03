@@ -10,10 +10,12 @@ const RoomForm = () => {
     // availableFrom: "",
     availability: true,
     images: [], // You may allow one or multiple image uploads
+    // images: "", // You may allow one or multiple image uploads
+
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  
+
 
   // const handleChange = (e) => {
   //   setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,8 +30,13 @@ const RoomForm = () => {
     });
   };
 
+  // const handleImageChange = (e) => {
+  //   setForm({ ...form, image: e.target.files[0] });
+  // };
+
   const handleImageChange = (e) => {
-    setForm({ ...form, image: e.target.files[0] });
+    const files = Array.from(e.target.files);
+    setForm({ ...form, images: files });
   };
 
 
@@ -39,18 +46,36 @@ const RoomForm = () => {
     setMessage("");
 
     try {
-   
+
+
+      const formData = new FormData();
+      formData.append("title", form.title);
+      formData.append("description", form.description);
+      formData.append("rent", form.rent);
+      formData.append("location", form.location);
+      formData.append("availability", form.availability);
+      // formData.append("createdBy", "hardcoded-user-id"); // or use session
+
+      form.amenities
+        .split(",")
+        .map((a) => a.trim())
+        .forEach((amenity) => formData.append("amenities", amenity));
+
+      form.images.forEach((img) => formData.append("images", img));
+
 
       const res = await fetch("http://localhost:5000/api/rooms", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
         credentials: "include",
-        body: JSON.stringify({
-          ...form,
-          amenities: form.amenities.split(",").map((a) => a.trim()),
-        }),
+        // body: JSON.stringify({
+        //   ...form,
+        //   amenities: form.amenities.split(",").map((a) => a.trim()),
+        // }),
+              body: formData,
+
       });
 
       const data = await res.json();
@@ -121,9 +146,10 @@ const RoomForm = () => {
 
       <input
         type="file"
-        name="image"
+        name="images"
         onChange={handleImageChange}
         accept="image/*"
+        multiple
         className="w-full"
       />
 

@@ -8,6 +8,8 @@ const roomSchema = new mongoose.Schema({
   amenities: [String],
   availability: { type: String, enum: ["true", "false"], default: "true" },
   images: [String], // URLs or base64
+  // images: String, // URLs or base64
+ 
   status: { type: String, enum: ["pending", "approved", "rejected"], default: "pending" },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 }, { timestamps: true });

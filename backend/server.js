@@ -21,6 +21,11 @@
 
 
 
+
+
+
+
+
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -50,8 +55,15 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/user", require("./routes/userRoutes"));
 
 
+const path = require("path");
+app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve uploaded files
+// app.use("/uploads", express.static("uploads"));
+
+
 const roomRoutes = require("./routes/roomRoutes");
 app.use("/api/rooms", roomRoutes);
+
+
 
 
 

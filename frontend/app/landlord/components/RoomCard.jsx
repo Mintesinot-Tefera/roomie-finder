@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 
 const statusColors = {
   Pending: "bg-yellow-100 text-yellow-800",
@@ -9,6 +11,36 @@ const statusColors = {
 };
 
 const RoomCard = ({ room }) => {
+    const router = useRouter();
+
+
+const handleDelete = async () => {
+    const confirmed = window.confirm("Are you sure you want to delete this room?");
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/rooms/${room._id}`, {
+        method: "DELETE",
+        // headers: {
+        //   Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        // },
+          credentials: "include", // important for cookies
+
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message || "Failed to delete");
+
+      alert("Room deleted successfully");
+      // Optionally reload or remove from state
+      router.reload(); // or use mutate() if using SWR
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+
   return (
     <div className="border rounded-lg shadow-sm p-4 bg-white">
       {room.images && room.images.length > 0 && (
@@ -42,7 +74,13 @@ const RoomCard = ({ room }) => {
         <Link href={`/landlord/rooms/edit/${room._id}`} className="text-blue-600 text-sm hover:underline">
           Edit
         </Link>
-        <button className="text-red-600 text-sm hover:underline">Delete</button>
+
+        <button
+          onClick={handleDelete}
+          className="text-red-600 text-sm hover:underline"
+        >
+          Delete
+        </button>
       </div>
     </div>
   );

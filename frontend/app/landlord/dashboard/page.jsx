@@ -6,6 +6,8 @@ import { Card, CardContent } from "@/components/card";
 // import useRoleGuard from "@/hooks/useRoleGuard";
 import { useAuth } from '@/context/AuthContext';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import Link from "next/link";
+
 
 
 const LandlordDashboard = () => {
@@ -32,29 +34,29 @@ const LandlordDashboard = () => {
     // if (!loading && user) {
     // if (user) {
 
-      const fetchRooms = async () => {
-        try {
-          const res = await fetch("http://localhost:5000/api/rooms/landlord", {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include", // important for cookies
-          });
+    const fetchRooms = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/rooms/landlord", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include", // important for cookies
+        });
 
-          if (!res.ok) throw new Error("Failed to fetch rooms");
+        if (!res.ok) throw new Error("Failed to fetch rooms");
 
-          const roomData = await res.json();
-          setRooms(roomData);
-        } catch (err) {
-          console.error("Error fetching landlord rooms:", err);
-        } finally {
-          setFetching(false);
-        }
-      };
-      fetchRooms();
-    }
-  // }, [user]);
+        const roomData = await res.json();
+        setRooms(roomData);
+      } catch (err) {
+        console.error("Error fetching landlord rooms:", err);
+      } finally {
+        setFetching(false);
+      }
+    };
+    fetchRooms();
+  }
+    // }, [user]);
 
-  , []);
+    , []);
 
   // }, [loading, user]);
 
@@ -126,7 +128,10 @@ const LandlordDashboard = () => {
                   </span>
                 </td>
                 <td className="px-4 py-2 space-x-2">
-                  <button className="text-blue-600 hover:underline">Edit</button>
+                  <Link href={`/landlord/rooms/edit/${room._id}`} className="text-blue-600 text-sm hover:underline">
+                    Edit
+                  </Link>
+                  {/* <button className="text-blue-600 hover:underline">Edit</button> */}
                   <button className="text-red-600 hover:underline">Delete</button>
                 </td>
               </tr>

@@ -112,6 +112,28 @@ exports.updateRoom = async (req, res) => {
 
 
 
+// DELETE /api/rooms/:id
+exports.deleteRoom = async (req, res) => {
+  try {
+    const room = await Room.findById(req.params.id);
+
+    if (!room) {
+      return res.status(404).json({ message: "Room not found" });
+    }
+
+    // Optionally: Check if req.user.id === room.createdBy
+    if (room.createdBy.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized to delete this room" });
+    }
+
+    await room.deleteOne();
+
+    res.status(200).json({ message: "Room deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 
 // router.get("/my-rooms", verifyToken, async (req, res) => {
 //   try {

@@ -7,10 +7,16 @@ import { Card, CardContent } from "@/components/card";
 import { useAuth } from '@/context/AuthContext';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import Link from "next/link";
+import ConfirmModal from "../components/ConfirmModal";
+import { useRouter } from "next/navigation";
+
+
 
 
 
 const LandlordDashboard = () => {
+  const router = useRouter();
+
   // const { user } = useAuth();
   // const [user, setUser] = useState(null);
   const [rooms, setRooms] = useState([]);
@@ -19,7 +25,8 @@ const LandlordDashboard = () => {
   // const approvedRooms = rooms.filter((r) => r.status === "Approved").length;
   // const isLoading = useAuthRedirect(); // redirect if not logged in
   const [fetching, setFetching] = useState(true);
-
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
 
 
 
@@ -27,7 +34,26 @@ const LandlordDashboard = () => {
   // useAuthRedirect();
   // useRoleGuard(["landlord"]);
 
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/rooms/${selectedRoomId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
 
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to delete");
+
+      alert("Room deleted successfully");
+
+      // remove the deleted room from state
+      setRooms((prev) => prev.filter((room) => room._id !== selectedRoomId));
+      setShowConfirm(false);
+      setSelectedRoomId(null);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
 
   useEffect(() => {
@@ -132,7 +158,19 @@ const LandlordDashboard = () => {
                     Edit
                   </Link>
                   {/* <button className="text-blue-600 hover:underline">Edit</button> */}
-                  <button className="text-red-600 hover:underline">Delete</button>
+                  <button
+
+                    onClick={() => {
+                      setSelectedRoomId(room._id);
+                      setShowConfirm(true);
+                    }}
+
+                    className="text-red-600 hover:underline">Delete</button>
+                  <ConfirmModal
+                    isOpen={showConfirm}
+                    onClose={() => setShowConfirm(false)}
+                    onConfirm={handleDelete}
+                  />
                 </td>
               </tr>
             ))}

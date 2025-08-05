@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import LoadingSpinner from '@/components/LoadingSpinner';
+
 
 const dummyUser = {
   fullName: "Mintesinot Tefera",
@@ -11,13 +13,55 @@ const dummyUser = {
 };
 
 const ProfilePage = () => {
-  const [user, setUser] = useState(dummyUser);
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/users/profile", {
+          credentials: "include",
+        });
+        if (!res.ok) throw new Error("Failed to fetch user");
+        const data = await res.json();
+        setUser(data.user); // Assuming backend returns { user: { ... } }
+      } catch (err) {
+        console.error("Error fetching user:", err);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:5000/api/users/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(user),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to update profile");
+      alert("Profile updated successfully");
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+
 
   const handleUserChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -35,21 +79,57 @@ const ProfilePage = () => {
     }
   };
 
-  const handleProfileUpdate = (e) => {
-    e.preventDefault();
-    alert("Profile updated (dummy)");
-    console.log("Updated user:", user);
-  };
 
-  const handleChangePassword = (e) => {
+  const handleChangePassword = async (e) => {
     e.preventDefault();
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       alert("New passwords do not match.");
       return;
     }
-    alert("Password changed (dummy)");
-    console.log("Password form:", passwordForm);
+
+    try {
+      const res = await fetch("http://localhost:5000/api/users/change-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(passwordForm),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Password change failed");
+      alert("Password changed successfully");
+      setPasswordForm({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (err) {
+      alert(err.message);
+    }
   };
+
+
+  if (!user) {
+    return <LoadingSpinner />
+  }
+
+  // const handleProfileUpdate = (e) => {
+  //   e.preventDefault();
+  //   alert("Profile updated (dummy)");
+  //   console.log("Updated user:", user);
+  // };
+
+  // const handleChangePassword = (e) => {
+  //   e.preventDefault();
+  //   if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+  //     alert("New passwords do not match.");
+  //     return;
+  //   }
+  //   alert("Password changed (dummy)");
+  //   console.log("Password form:", passwordForm);
+  // };
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-8 bg-white rounded-xl shadow">

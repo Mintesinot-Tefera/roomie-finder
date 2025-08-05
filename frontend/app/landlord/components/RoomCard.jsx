@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ConfirmModal from "./ConfirmModal";
+
 
 
 const statusColors = {
@@ -11,34 +14,58 @@ const statusColors = {
 };
 
 const RoomCard = ({ room }) => {
-    const router = useRouter();
+  const router = useRouter();
+
+  const [showConfirm, setShowConfirm] = useState(false);
 
 
-const handleDelete = async () => {
-    const confirmed = window.confirm("Are you sure you want to delete this room?");
-    if (!confirmed) return;
-
+  const handleDelete = async () => {
     try {
       const res = await fetch(`http://localhost:5000/api/rooms/${room._id}`, {
         method: "DELETE",
-        // headers: {
-        //   Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        // },
-          credentials: "include", // important for cookies
-
+        credentials: "include",
       });
 
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.message || "Failed to delete");
 
       alert("Room deleted successfully");
-      // Optionally reload or remove from state
-      router.reload(); // or use mutate() if using SWR
+
+      if (router.refresh) {
+        router.refresh(); // for App Router
+      } else if (router.replace) {
+        router.replace(router.asPath); // for Pages Router
+      }
     } catch (err) {
       alert(err.message);
     }
   };
+
+  // const handleDelete = async () => {
+  //     const confirmed = window.confirm("Are you sure you want to delete this room?");
+  //     if (!confirmed) return;
+
+  //     try {
+  //       const res = await fetch(`http://localhost:5000/api/rooms/${room._id}`, {
+  //         method: "DELETE",
+  //         // headers: {
+  //         //   Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+  //         // },
+  //           credentials: "include", // important for cookies
+
+  //       });
+
+  //       const data = await res.json();
+
+  //       if (!res.ok) throw new Error(data.message || "Failed to delete");
+
+  //       alert("Room deleted successfully");
+  //       // Optionally reload or remove from state
+  //       router.reload(); // or use mutate() if using SWR
+  //     } catch (err) {
+  //       alert(err.message);
+  //     }
+  //   };
 
 
   return (
@@ -75,12 +102,27 @@ const handleDelete = async () => {
           Edit
         </Link>
 
-        <button
+        {/* <button
           onClick={handleDelete}
           className="text-red-600 text-sm hover:underline"
         >
           Delete
+        </button> */}
+
+
+        <button
+          onClick={() => setShowConfirm(true)}
+          className="text-red-600 text-sm hover:underline"
+        >
+          Delete
         </button>
+
+        <ConfirmModal
+          isOpen={showConfirm}
+          onClose={() => setShowConfirm(false)}
+          onConfirm={handleDelete}
+        />
+
       </div>
     </div>
   );
